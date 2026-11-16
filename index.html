@@ -318,6 +318,12 @@ details summary { cursor: pointer; font-weight: 700; color: var(--navy); }
 .lg-item input[type=range] { width: 100%; }
 .lg-col { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .ui-btn.peq[disabled] { cursor: not-allowed; }
+/* tipo de peça: duas abas grandes, diferentes dos botões de modelo, para ficar claro que são níveis distintos */
+.ui-tipos-rot { font: 700 14px Inter, Arial, sans-serif; color: var(--navy); margin-bottom: 8px; }
+.ui-tipos { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: #E9E4DA; border-radius: 14px; padding: 4px; }
+.ui-tipos .ui-opcao { border: 0; border-radius: 10px; background: transparent; font: 800 15px/1.25 Nunito, Arial, sans-serif; padding: 12px 10px; text-align: center; }
+.ui-tipos .ui-opcao:hover { background: rgba(31,58,95,.1); }
+.ui-tipos .ui-opcao[aria-pressed="true"] { background: var(--navy); color: #fff; }
 .ui-sel { font: 600 13px Inter, Arial, sans-serif; border: 1.5px solid rgba(31,58,95,.3); border-radius: 10px; padding: 7px 10px; background: #fff; color: var(--navy); }
 .ui-sel:focus-visible, .ui-check input:focus-visible, .ui-sobre a:focus-visible, .ui-topo a:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
 .ui-check { display: flex; gap: 8px; align-items: flex-start; font: 600 14px/1.4 Inter, Arial, sans-serif; color: var(--navy); cursor: pointer; }
@@ -353,9 +359,12 @@ details summary { cursor: pointer; font-weight: 700; color: var(--navy); }
       <button class="ui-btn sec peq" id="b-zerar" type="button">Começar do zero</button>
     </div>
     <div>
-      <div class="ui-passo">1 · Tipo de peça e modelo</div>
-      <div class="ui-grupo" id="g-cat" role="group" aria-label="Tipo de peça" style="margin-bottom:10px"></div>
-      <div class="ui-grupo" id="g-modelo" role="group" aria-label="Modelo"></div>
+      <div class="ui-tipos-rot" id="rot-tipos">O que você vai criar?</div>
+      <div class="ui-tipos" id="g-cat" role="group" aria-labelledby="rot-tipos"></div>
+    </div>
+    <div>
+      <div class="ui-passo" id="passo-modelo">1 · Modelo</div>
+      <div class="ui-grupo" id="g-modelo" role="group" aria-labelledby="passo-modelo"></div>
     </div>
     <div id="instr-banner" class="ui-dica" style="max-width:none" hidden>
       <details open>
@@ -865,7 +874,7 @@ const S = { modelo: 'post', tela: 0, rodape: 'faixa', opcoes: {}, globais: {}, v
   esquema: { ...ESQ_PADRAO }, car: CAR_PADRAO.slice(), cc: false, ia: { on: false, txt: IA_PADRAO } };
 telasCarrossel();
 const ehBanner = (m = S.modelo) => MODELOS[m].cat === 'banner';
-const CATS = [['social', 'Redes sociais'], ['banner', 'Banner impresso 90 × 120 cm']];
+const CATS = [['social', 'Redes sociais'], ['banner', 'Banner impresso']];
 const ultimoDaCat = { social: 'post', banner: 'b3' };
 function valoresPadrao(m, comExemplo) {
   const mod = MODELOS[m];
@@ -947,6 +956,7 @@ function montarSeletores() {
   }
   $('passo-rodape').hidden = bn; $('passo-esquema').hidden = bn; $('instr-banner').hidden = !bn;
   $('b-pdf').hidden = !bn; $('campo-legenda').hidden = bn; $('acoes-legenda').hidden = bn;
+  $('passo-modelo').textContent = bn ? '1 · Modelo de banner (90 × 120 cm)' : '1 · Modelo de rede social';
   $('passo-textos').textContent = (bn ? '2' : '4') + ' · Textos'; $('passo-logos').textContent = (bn ? '3 · Logos e imagens' : '5 · Logos e imagens extras');
   $('b-baixar').textContent = bn ? 'Baixar imagem (PNG)' : 'Baixar esta imagem (PNG)';
   $('b-baixar').classList.toggle('sec', bn);
